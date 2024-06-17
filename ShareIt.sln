@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareItApp", "ShareItApp\ShareItApp.csproj", "{B7856D11-32BB-4166-9ABE-C1F72FF4A956}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{AE36DD02-5136-4E5B-9061-D0FC2610E291}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D8A1D21D-D4B3-4AFD-A9BA-3741CAE33BA2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{720A0AA9-A9F6-4C4B-ABCB-4107D36E5BC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareIt.Core.Domain", "ShareIt.Core.Domain\ShareIt.Core.Domain.csproj", "{DF928E3D-9F10-4274-9BAA-6ED1DEB32DE1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShareIt.Presentation.WebApp", "ShareIt.Presentation.WebApp", "{D23DC1EF-111E-45E2-B564-F2D1BFF0C4B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareIt.Core.Application", "ShareIt.Core.Application\ShareIt.Core.Application.csproj", "{F0423124-4C2D-4733-B923-E63D0974276A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareIt.Core.Domain", "ShareIt.Core.Domain\ShareIt.Core.Domain.csproj", "{DF928E3D-9F10-4274-9BAA-6ED1DEB32DE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareIt.Infrastructure.Identity", "ShareIt.Infrastructure.Identity\ShareIt.Infrastructure.Identity.csproj", "{C3EF50CD-86CE-4935-824E-2391973A2EEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareIt.Core.Application", "ShareIt.Core.Application\ShareIt.Core.Application.csproj", "{F0423124-4C2D-4733-B923-E63D0974276A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareIt.Infrastructure.Shared", "ShareIt.Infrastructure.Shared\ShareIt.Infrastructure.Shared.csproj", "{6756235C-576F-4D78-AB7A-0B4D9E35C59B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareIt.Infrastructure.Identity", "ShareIt.Infrastructure.Identity\ShareIt.Infrastructure.Identity.csproj", "{C3EF50CD-86CE-4935-824E-2391973A2EEF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DFE3FB51-927B-45BC-86F3-C6EBFF477A08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareIt.Infrastructure.Shared", "ShareIt.Infrastructure.Shared\ShareIt.Infrastructure.Shared.csproj", "{6756235C-576F-4D78-AB7A-0B4D9E35C59B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShareIt.Webapp", "ShareIt.Webapp", "{8EEB67CE-2B4F-4DD2-A43B-E998D8E97CF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareItApp", "ShareItApp\ShareItApp.csproj", "{5FE719D3-BC21-4670-8478-660ECC9EBC7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7856D11-32BB-4166-9ABE-C1F72FF4A956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7856D11-32BB-4166-9ABE-C1F72FF4A956}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7856D11-32BB-4166-9ABE-C1F72FF4A956}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7856D11-32BB-4166-9ABE-C1F72FF4A956}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF928E3D-9F10-4274-9BAA-6ED1DEB32DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF928E3D-9F10-4274-9BAA-6ED1DEB32DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF928E3D-9F10-4274-9BAA-6ED1DEB32DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,17 +43,21 @@ Global
 		{6756235C-576F-4D78-AB7A-0B4D9E35C59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6756235C-576F-4D78-AB7A-0B4D9E35C59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6756235C-576F-4D78-AB7A-0B4D9E35C59B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B7856D11-32BB-4166-9ABE-C1F72FF4A956} = {D23DC1EF-111E-45E2-B564-F2D1BFF0C4B9}
-		{D23DC1EF-111E-45E2-B564-F2D1BFF0C4B9} = {720A0AA9-A9F6-4C4B-ABCB-4107D36E5BC9}
 		{DF928E3D-9F10-4274-9BAA-6ED1DEB32DE1} = {AE36DD02-5136-4E5B-9061-D0FC2610E291}
 		{F0423124-4C2D-4733-B923-E63D0974276A} = {AE36DD02-5136-4E5B-9061-D0FC2610E291}
 		{C3EF50CD-86CE-4935-824E-2391973A2EEF} = {D8A1D21D-D4B3-4AFD-A9BA-3741CAE33BA2}
 		{6756235C-576F-4D78-AB7A-0B4D9E35C59B} = {D8A1D21D-D4B3-4AFD-A9BA-3741CAE33BA2}
+		{8EEB67CE-2B4F-4DD2-A43B-E998D8E97CF0} = {DFE3FB51-927B-45BC-86F3-C6EBFF477A08}
+		{5FE719D3-BC21-4670-8478-660ECC9EBC7E} = {8EEB67CE-2B4F-4DD2-A43B-E998D8E97CF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77C0B646-2DEB-41C5-BB79-F1B23A77C17D}
