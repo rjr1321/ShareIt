@@ -23,10 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="MapProfile\" />
-    <Folder Include="Services\" />
-    <Folder Include="Seeds\" />
   </ItemGroup>
 
   <ItemGroup>
