@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ShareIt.Infrastructure.Identity.Entities;
+using ShareIt.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

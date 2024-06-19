@@ -1,49 +1,54 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ShareIt.Infrastructure.Identity.Entities;
+using ShareIt.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using ShareIt.Core.Application.Interfaces.Infrastructure;
+using ShareIt.Infrastructure.Identity.Context;
+using ShareIt.Infrastructure.Identity.Services;
+using System.Reflection;
 
 namespace ShareIt.Infrastructure.Identity
 {
+
     public static class ServicesRegistration
     {
 
-        public class IdentityContext : IdentityDbContext<User>
+        public static void AddInfrastructureIdentityLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
-            { }
-
-            protected override void OnModelCreating(ModelBuilder builder)
+            #region Contexts
+            services.AddDbContext<IdentityContext>(options =>
             {
-                base.OnModelCreating(builder);
+                options.EnableSensitiveDataLogging();
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"),
+                m => m.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName));
+            });
+            #endregion
 
-                builder.Entity<User>(entity =>
-                {
-                    entity.ToTable(name: "Users");
-                });
+            #region Identity
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
-                builder.Entity<IdentityRole>(entity =>
-                {
-                    entity.ToTable(name: "Roles");
-                });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/User";
+                options.AccessDeniedPath = "/User/AccessDenied";
+            });
 
-                builder.Entity<IdentityUserRole<string>>(entity =>
-                {
-                    entity.ToTable(name: "UserRoles");
-                });
+            services.AddAuthentication();
+            #endregion
 
-                builder.Entity<IdentityUserLogin<string>>(entity =>
-                {
-                    entity.ToTable(name: "UserLogins");
-                });
-
-            }
-
+            #region Services
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddTransient<IAccountServices, AccountServices>();
+            #endregion
         }
     }
+
 }

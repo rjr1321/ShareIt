@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MapProfile\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ShareIt.Core.Application\ShareIt.Core.Application.csproj" />
     <ProjectReference Include="..\ShareIt.Infrastructure.Shared\ShareIt.Infrastructure.Shared.csproj" />
   </ItemGroup>

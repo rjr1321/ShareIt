@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShareIt.Webapp", "ShareIt.Webapp", "{8EEB67CE-2B4F-4DD2-A43B-E998D8E97CF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareItApp", "ShareItApp\ShareItApp.csproj", "{5FE719D3-BC21-4670-8478-660ECC9EBC7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareItApp", "ShareItApp\ShareItApp.csproj", "{5FE719D3-BC21-4670-8478-660ECC9EBC7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareIt.Infrastructure.Persistence", "ShareIt.Infrastructure.Persistence\ShareIt.Infrastructure.Persistence.csproj", "{F89F5742-3243-4C57-AA40-BEFF9B10E829}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FE719D3-BC21-4670-8478-660ECC9EBC7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F89F5742-3243-4C57-AA40-BEFF9B10E829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F89F5742-3243-4C57-AA40-BEFF9B10E829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F89F5742-3243-4C57-AA40-BEFF9B10E829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F89F5742-3243-4C57-AA40-BEFF9B10E829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{6756235C-576F-4D78-AB7A-0B4D9E35C59B} = {D8A1D21D-D4B3-4AFD-A9BA-3741CAE33BA2}
 		{8EEB67CE-2B4F-4DD2-A43B-E998D8E97CF0} = {DFE3FB51-927B-45BC-86F3-C6EBFF477A08}
 		{5FE719D3-BC21-4670-8478-660ECC9EBC7E} = {8EEB67CE-2B4F-4DD2-A43B-E998D8E97CF0}
+		{F89F5742-3243-4C57-AA40-BEFF9B10E829} = {D8A1D21D-D4B3-4AFD-A9BA-3741CAE33BA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77C0B646-2DEB-41C5-BB79-F1B23A77C17D}

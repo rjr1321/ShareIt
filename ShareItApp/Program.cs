@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using ShareIt.Core.Application;
 using ShareIt.Infrastructure.Identity;
 using ShareIt.Infrastructure.Identity.Seeds;
+using ShareIt.Infrastructure.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ builder.Services.AddSession(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddInfrastructureSharedLayer(builder.Configuration);
+builder.Services.AddApplicationLayer(builder.Configuration);
+builder.Services.AddInfrastructureIdentityLayer(builder.Configuration);
 
 var app = builder.Build();
 

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="MapProfiles\" />
     <Folder Include="DTOs\" />
     <Folder Include="ViewModels\" />
