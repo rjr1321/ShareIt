@@ -10,9 +10,14 @@ namespace ShareIt.Core.Domain.Entities
     {
         public int Id { get; set; }
         public string Content { get; set; }
+
+        public int? IdParentComment { get; set; }
+        public Comment? ParentComment { get; set; }
+        public int IdPublication { get; set; }
+        public Publication publication { get; set; }
         public string IdProfile { get; set; }
         public AppProfile Profile { get; set; }
-        public List<Comment>? Replies { get; set; }
+        public ICollection<Comment>? Replies { get; set; }
         
     }
 }

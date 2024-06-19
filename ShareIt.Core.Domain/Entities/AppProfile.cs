@@ -10,8 +10,8 @@ namespace ShareIt.Core.Domain.Entities
     {
         public string IdUser { get; set; }
         public string PhotoProfile { get; set; }
-        public List<AppProfile>? Friends { get; set; }
-        public Publications? Publications { get; set; }
-        public List<Comment>? Comments { get; set; }
+        public ICollection<Friendship>? Friends { get; set; }
+        public ICollection<Publication>? Publications { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
     }
 }

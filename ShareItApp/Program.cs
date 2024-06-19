@@ -3,6 +3,7 @@ using ShareIt.Core.Application;
 using ShareIt.Infrastructure.Identity;
 using ShareIt.Infrastructure.Identity.Seeds;
 using ShareIt.Infrastructure.Shared;
+using ShareIt.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddSession(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddInfrastructurePersistenceLayer(builder.Configuration);
 builder.Services.AddInfrastructureSharedLayer(builder.Configuration);
 builder.Services.AddApplicationLayer(builder.Configuration);
 builder.Services.AddInfrastructureIdentityLayer(builder.Configuration);
