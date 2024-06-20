@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShareIt.Core.Application.Interfaces.Repos
 {
-    public interface IPublicationRepository, IGenericRepository<Publication>
+    public interface IPublicationRepository: IGenericRepository<Publication>
     {
     }
 }
