@@ -20,8 +20,4 @@
     <ProjectReference Include="..\ShareIt.Core.Application\ShareIt.Core.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repos\" />
-  </ItemGroup>
-
 </Project>

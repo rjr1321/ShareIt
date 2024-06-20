@@ -23,7 +23,7 @@ builder.Services.AddInfrastructureIdentityLayer(builder.Configuration);
 
 var app = builder.Build();
 
-/*using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
@@ -31,20 +31,20 @@ var app = builder.Build();
     {
         var userManager = services.GetRequiredService<UserManager<User>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-       
+
 
 
         await DefaultRoles.SeedAsync(userManager, roleManager);
- 
+        await DefaultAdmin.SeedAsync(userManager, roleManager);
         await DefaultUser.SeedAsync(userManager, roleManager);
     }
     catch (Exception ex)
     {
-    Console.WriteLine(ex.ToString());
+        Console.WriteLine(ex.ToString());
     }
-}*/
+}
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
