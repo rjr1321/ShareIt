@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Application.Interfaces.Services
+namespace ShareIt.Core.Application
 {
     public interface IGenericServices<Entity, SaveViewModel, ViewModel>
 where Entity : class

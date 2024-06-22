@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Application.ViewModels.AppProfile
+namespace ShareIt.Core.Application
 {
-    public class AppProfileViewModel
+    public class UserViewModel
     {
     }
 }

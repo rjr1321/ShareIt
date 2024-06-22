@@ -1,0 +1,69 @@
+﻿@using ShareIt.Core.Application
+@model UserIndexViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    
+
+
+
+
+<link href="css/sign-in.css" rel="stylesheet">
+
+
+
+<main class="form-signin w-100 m-auto text-center">
+
+    <div class="card mb-3 rounded-3" style="max-width: 25rem;">
+ 
+  <div class="card-body">
+
+
+            <div class="text-center mb-5 mt-5">
+                <h1>ShareIt</h1>
+            </div>
+
+            <form method="post" asp-controller="User" asp-action="LogIn">
+
+  
+
+                <div class="form-floating">
+                    <input type="text" asp-for="@Model.Login.Username" class="form-control" id="floatingInput"
+                           placeholder="Username or Email">
+                    <label asp-for="@Model.Login.Username" for="floatingInput">Username or Email</label>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Login.Password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                    <label asp-for="@Model.Login.Password" for="floatingPassword">Password</label>
+                </div>
+
+
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                @if (@Model.HasError)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <p>@Model.Error</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+
+                    <button class="btn btn-primary w-100 py-2 mb-2 rounded-pill" type="submit">Sign in</button>
+@*               
+ *@               
+            </form>
+               
+
+                @await Html.PartialAsync("../Shared/User/RegisterPartialView.cshtml", Model.Register)
+                @await Html.PartialAsync("../Shared/User/ForgotPasswordPartialView.cshtml", Model.ForgotPassword)
+                <p class="mt-5 mb-3 text-body-secondary">&copy;2024 Just4HourSleep | 123Pa$$word!</p>
+
+  
+  </div>
+</div>
+
+    
+</main>
+</div>

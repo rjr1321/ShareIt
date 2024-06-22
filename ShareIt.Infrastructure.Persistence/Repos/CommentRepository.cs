@@ -1,13 +1,13 @@
-﻿using ShareIt.Core.Application.Interfaces.Repos;
-using ShareIt.Core.Domain.Entities;
-using ShareIt.Infrastructure.Persistence.Context;
+﻿using ShareIt.Core.Application;
+using ShareIt.Core.Domain;
+using ShareIt.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Infrastructure.Persistence.Repos
+namespace ShareIt.Infrastructure
 {
     public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     {

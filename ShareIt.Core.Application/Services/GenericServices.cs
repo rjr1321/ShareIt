@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Azure;
-using ShareIt.Core.Application.Interfaces.Services;
+using ShareIt.Core.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Application.Services
+namespace ShareIt.Core.Application
 {
     public class GenericServices<Entity, SaveViewModel, ViewModel> : IGenericServices<Entity, SaveViewModel, ViewModel>
  where Entity : class
@@ -85,7 +85,7 @@ namespace ShareIt.Core.Application.Services
             return _mapper.Map<List<ViewModel>>(await GetAllAsync());
         }
 
-        public async Task<Entity> GetByIdAsync(int id)
+        public virtual async Task<Entity> GetByIdAsync(int id)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace ShareIt.Core.Application.Services
             }
         }
 
-        public async Task<SaveViewModel> GetByIdSaveViewModel(int id)
+        public virtual async Task<SaveViewModel> GetByIdSaveViewModel(int id)
         {
             return _mapper.Map<SaveViewModel>(await GetByIdAsync(id));
         }

@@ -1,0 +1,86 @@
+﻿<!-- Button trigger modal -->
+
+@using ShareIt.Core.Application
+@model RegisterViewModel
+
+
+
+<button type="button" class="btn btn-success w-100 py-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#Register">
+    Register
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Register</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form method="post" asp-controller="User" asp-action="Register" enctype="multipart/form-data">
+
+                
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" type="text" class="form-control" id="name" placeholder="">
+                        <label asp-for="Name" for="name">Name</label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="LastName" class="form-control" id="LastName" placeholder="" />
+                        <label asp-for="LastName" for="LastName">Last Name </label>    
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Username" id="username" class="form-control" placeholder="" />
+                        <label asp-for="Username" for="username" >Username </label> 
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" id="password" type="Password" class="form-control" placeholder="" />
+                        <label asp-for="Password" for="password" >password </label>
+                        
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="ConfirmPassword" id="cpassword" type="password" class="form-control" placeholder="" />
+                        <label asp-for="ConfirmPassword" for="cpassword" class="form-label">Confirm Password </label>
+                        
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="PhoneNumber" id="phone" class="form-control" placeholder="" />
+                        <label asp-for="PhoneNumber" for="phone" class="form-label">Phone number </label>
+                        
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" id="email" class="form-control" placeholder="" />
+                        <label asp-for="Email" for="email" class="form-label">Email </label>
+                        
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Photo</span>
+                        <input asp-for="Photo" type="file" accept="image/*" class="form-control" />
+                    </div>
+
+                   
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Complete</button>
+                    123Pa$$word!
+                </form>
+
+
+            </div>
+     
+        </div>
+    </div>
+</div>

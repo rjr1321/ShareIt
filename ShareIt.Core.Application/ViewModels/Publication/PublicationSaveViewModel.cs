@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Application.ViewModels.Publication
+namespace ShareIt.Core.Application
 {
     public class PublicationSaveViewModel
     {

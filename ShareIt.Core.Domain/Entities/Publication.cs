@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Domain.Entities
+namespace ShareIt.Core.Domain
 {
     public class Publication
     {

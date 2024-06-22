@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ShareIt.Infrastructure.Persistence.Context;
+using ShareIt.Core.Application;
+using ShareIt.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +26,14 @@ namespace ShareIt.Infrastructure.Persistence
 
 
             #region Repositories
-       /*     services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            
-            services.AddTransient<IPhotoRepository, PhotoRepository>();
-            services.AddTransient<IAppProfileRepository, AppProfileRepository>();
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddTransient<IAppProfileRepository,  AppProfileRepository>();
             services.AddTransient<IPublicationRepository, PublicationRepository>();
-            services.AddTransient<ICommentRepository, CommentRepository>();*/
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IFriendshipRepository, FriendshipRepository>();
+            services.AddTransient<IPhotoRepository, PhotoRepository>();
+           
 
 
             #endregion

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Azure;
 using Microsoft.EntityFrameworkCore;
 using ShareIt.Core.Application;
-using ShareIt.Infrastructure.Persistence.Context;
+using ShareIt.Infrastructure.Persistence;
 
-namespace ShareIt.Infrastructure.Persistence.Repos
+namespace ShareIt.Infrastructure
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

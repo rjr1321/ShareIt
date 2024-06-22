@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShareIt.Core.Application.Interfaces.Infrastructure;
-using ShareIt.Infrastructure.Identity.Context;
-using ShareIt.Infrastructure.Identity.Services;
+using ShareIt.Infrastructure.Identity;
 using System.Reflection;
+using ShareIt.Core.Application;
 
 namespace ShareIt.Infrastructure.Identity
 {

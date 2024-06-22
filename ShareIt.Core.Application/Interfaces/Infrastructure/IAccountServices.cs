@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Application.Interfaces.Infrastructure
+namespace ShareIt.Core.Application
 {
     public interface IAccountServices
     {

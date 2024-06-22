@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Infrastructure.Identity.Context
+namespace ShareIt.Infrastructure
 {
     public class IdentityContext : IdentityDbContext<User>
     {

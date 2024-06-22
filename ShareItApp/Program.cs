@@ -4,6 +4,7 @@ using ShareIt.Infrastructure.Identity;
 using ShareIt.Infrastructure.Identity.Seeds;
 using ShareIt.Infrastructure.Shared;
 using ShareIt.Infrastructure.Persistence;
+using ShareItApp.MiddleWares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,10 @@ builder.Services.AddInfrastructurePersistenceLayer(builder.Configuration);
 builder.Services.AddInfrastructureSharedLayer(builder.Configuration);
 builder.Services.AddApplicationLayer(builder.Configuration);
 builder.Services.AddInfrastructureIdentityLayer(builder.Configuration);
+
+builder.Services.AddScoped<LoginAuth>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 
 var app = builder.Build();
 
@@ -63,6 +68,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Publication}/{action=Index}/{id?}");
 
 app.Run();

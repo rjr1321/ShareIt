@@ -6,14 +6,16 @@ using ShareIt.Core.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Infrastructure.Identity.Services
-{
+namespace ShareIt.Infrastructure.Identity
+{ 
     public class AccountServices : IAccountServices
     {
         private readonly UserManager<User> _userManager;
+
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailServices _emailService;
 
@@ -33,7 +35,7 @@ namespace ShareIt.Infrastructure.Identity.Services
         {
             AuthResponse response = new();
 
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.Username);
             if (user == null)
             {
 
@@ -104,7 +106,7 @@ namespace ShareIt.Infrastructure.Identity.Services
             {
                 Email = request.Email,
              
-                Name = request.FirstName,
+                Name = request.Name,
                 LastName = request.LastName,
                 UserName = request.Username
             };
@@ -246,18 +248,45 @@ namespace ShareIt.Infrastructure.Identity.Services
         {
             const string alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             const string specialChars = "!@#$%^&*()-_=+[{]};:'\",<.>/?";
+            const int passwordLength = 8;
+
+            var chars = alphanumericChars + specialChars;
+            var data = new byte[passwordLength];
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(data);
+            }
+
+            var passwordChars = new char[passwordLength];
+            for (int i = 0; i < passwordChars.Length; i++)
+            {
+                passwordChars[i] = chars[data[i] % chars.Length];
+            }
+
+       
+            passwordChars[0] = specialChars[data[0] % specialChars.Length];
+            passwordChars[1] = alphanumericChars.Skip(52).Take(10).ToArray()[data[1] % 10]; // 0-9 are the last 10 characters of alphanumericChars
+
+            // Shuffle the resulting password to ensure randomness
             var random = new Random();
-
-            // Include at least one special character and one digit
-            var newPassword = new string(
-                Enumerable.Repeat(alphanumericChars, 6)
-                .Select(s => s[random.Next(s.Length)])
-                .Concat(new[] { specialChars[random.Next(specialChars.Length)] })
-                .Concat(new[] { alphanumericChars[random.Next(alphanumericChars.Length)] })
-                .OrderBy(c => random.Next())
-                .ToArray());
-
-            return newPassword;
+            return new string(passwordChars.OrderBy(x => random.Next()).ToArray());
         }
+        /*       private string GenerateRandomPassword()
+               {
+                   const string alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                   const string specialChars = "!@#$%^&*()-_=+[{]};:'\",<.>/?";
+                   var random = new Random();
+
+                   // Include at least one special character and one digit
+                   var newPassword = new string(
+                       Enumerable.Repeat(alphanumericChars, 6)
+                       .Select(s => s[random.Next(s.Length)])
+                       .Concat(new[] { specialChars[random.Next(specialChars.Length)] })
+                       .Concat(new[] { alphanumericChars[random.Next(alphanumericChars.Length)] })
+                       .OrderBy(c => random.Next())
+                       .ToArray());
+
+                   return newPassword;
+               }*/
     }
 }

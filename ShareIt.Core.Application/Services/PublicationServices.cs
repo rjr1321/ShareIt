@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
-using ShareIt.Core.Application.Interfaces;
-using ShareIt.Core.Application.Interfaces.Repos;
-using ShareIt.Core.Application.ViewModels.AppProfile;
-using ShareIt.Core.Application.ViewModels.Publication;
-using ShareIt.Core.Domain.Entities;
+
+using ShareIt.Core.Application;
+using ShareIt.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShareIt.Core.Application.Services
+namespace ShareIt.Core.Application
 {
     public class PublicationServices : GenericServices<Publication, PublicationSaveViewModel, PublicationViewModel>, IPublicationServices
     {
