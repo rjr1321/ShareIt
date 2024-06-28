@@ -1,0 +1,20 @@
+﻿@using ShareIt.Core.Application
+@model FriendshipIndexViewModel
+
+@await Html.PartialAsync("../Shared/NavbarMainMenuPartialView.cshtml", Model.UserClaim.Identity.Name)
+
+
+
+<main role="main" class="content" class="pb-3">
+    <div class="container">
+
+        <div>
+            @await Html.PartialAsync("../Shared/Friendship/FriendshipPartialView", Model)
+        </div>
+
+
+        <div>
+            @await Html.PartialAsync("../Shared/Friendship/FriendshipPublicationListPartialView.cshtml", Model)
+        </div>
+
+</main>

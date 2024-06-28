@@ -26,6 +26,8 @@
 
 
     Model.VideoYoutube = EditYouTubeUrl(Model.VideoYoutube);
+
+    var current = this.ViewContext.RouteData.Values["controller"] as string ?? "Publication";
 }
 
 <div class="card m-5">
@@ -85,10 +87,11 @@
     </div>
     <div class="card-footer text-body-secondary text-center">
 
-       
-        @await Html.PartialAsync("PublicationDeletePartialView.cshtml", Model)
+        @if(current == "Publication")
+        {
+            @await Html.PartialAsync("PublicationDeletePartialView.cshtml", Model)
 
-        @await Html.PartialAsync("PublicationEditPartialView.cshtml", new PublicationSaveViewModel
+            @await Html.PartialAsync("PublicationEditPartialView.cshtml", new PublicationSaveViewModel
    {
        Id = Model.Id,
        IdProfile = Model.Profile.IdUser,
@@ -98,6 +101,9 @@
        ExistingPhotoPath = Model.Photo,
 
    })
+        }
+
+        
 
         @await Html.PartialAsync("/Views/Shared/Comment/CommentListPartialView.cshtml", Model)
 

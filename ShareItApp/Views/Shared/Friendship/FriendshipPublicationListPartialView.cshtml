@@ -1,0 +1,17 @@
+﻿@{
+}
+@using ShareIt.Core.Application
+@model FriendshipIndexViewModel
+
+
+<div>
+
+    @foreach (var publication in Model.Publications)
+    {
+        publication.Username = Model.UserClaim.Identity.Name;
+        @await Html.PartialAsync("../Shared/Publication/PublicationPartialView", publication)
+        ;
+
+    }
+
+</div>
