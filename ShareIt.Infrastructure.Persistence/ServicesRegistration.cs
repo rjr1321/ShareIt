@@ -32,7 +32,6 @@ namespace ShareIt.Infrastructure.Persistence
             services.AddTransient<IPublicationRepository, PublicationRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
             services.AddTransient<IFriendshipRepository, FriendshipRepository>();
-            services.AddTransient<IPhotoRepository, PhotoRepository>();
            
 
 

@@ -1,0 +1,34 @@
+﻿@using ShareIt.Core.Application
+@model PublicationViewModel
+@{
+    string Id = Model.Id + "Delete";
+}
+
+
+<button type="button" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#@Id">Delete</button>
+
+<!-- Modal -->
+<div class="modal fade" id="@Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h3>Are you Sure you want to delete this publication?</h3>
+
+                
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-action="Delete" asp-controller="Publication" asp-route-id="@Model.Id">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                   
+               
+                
+            </div>
+        </div>
+    </div>
+</div>

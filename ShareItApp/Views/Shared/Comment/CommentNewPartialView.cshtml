@@ -1,0 +1,32 @@
+﻿@using ShareIt.Core.Application
+@model CommentSaveViewModel
+@{
+}
+
+
+<div class="container mt-3">
+    <div class="row align-items-start">
+        <div class="col-1 text-start">
+            <img class="rounded-circle align-middle" style="height: 40px; width: 40px;" src="@Model.Profile.PhotoProfile" />
+        </div>
+        <div class="col-3 text-start">
+            <div class="align-middle">
+                @Model.Username
+            </div>
+        </div>
+        <div class="col-8">
+            <form asp-action="AddComment" asp-controller="Publication" method="post" class="form-inline">
+                <input hidden value="@Model.IdProfile" asp-for="IdProfile" />
+                <input hidden value="@Model.IdPublication" asp-for="IdPublication" />
+                <input hidden value="@Model.IdParentComment" asp-for="IdParentComment" />
+                <div class="input-group mb-3">
+                    <textarea class="form-control" asp-for="Content" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 40px;"></textarea>
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+ 

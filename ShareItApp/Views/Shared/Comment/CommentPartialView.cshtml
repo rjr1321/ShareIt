@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ShareIt.Core.Application
+@using ShareIt.Infrastructure.Identity
+@inject IUserServices _userServices
+@inject UserManager<User> _userManager
+@using System.Security.Claims
+@using ShareIt.Core.Domain
+
+@model CommentViewModel
+    
+@{
+    string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    string currentUserName = User.Identity.Name;
+
+    AppProfile profile = await _userServices.GetByIdAsync(currentUserId);
+
+    List<int> commentsOn = new List<int>();
+
+}
+
+
+<div class="comment">
+    <div class="card-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-1 text-start">
+                    <img class="rounded-circle align-middle" style="height: 40px; width: 40px;" src="@Model.Profile.PhotoProfile" />
+                </div>
+                <div class="col-3 text-start">
+                    <div class="col-9 align-middle">
+                        @Model.Username
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <p>@Model.Content</p>
+                </div>
+                <div class="col-3 text-end">
+                  
+
+                    <div class="mb-1 text-muted">@Model.DateTime</div>
+                </div>
+                <div class="col-2">
+                    @await Html.PartialAsync("CommentReplyPartialView.cshtml", new CommentSaveViewModel{
+                        IdParentComment = Model.Id,
+                        Username = currentUserName,
+                        IdProfile = currentUserId,
+                        Profile = profile
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Replies != null && Model.Replies.Any())
+    {
+        <div class="comment-replies">
+            @foreach (var reply in Model.Replies)
+            {
+     
+                
+
+                    ShareIt.Infrastructure.Identity.User user = await _userManager.FindByIdAsync(reply.IdProfile);
+                    reply.Username = user.UserName;
+
+                    <div class="ms-5 mt-2">
+                        @await Html.PartialAsync("CommentPartialView.cshtml", reply)
+                    </div>
+
+                
+
+               
+               
+            }
+        </div>
+    }
+</div>

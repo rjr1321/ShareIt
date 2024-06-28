@@ -5,14 +5,7 @@
 }
 
 <div class="container">
-    
-
-
-
-
-<link href="css/sign-in.css" rel="stylesheet">
-
-
+  
 
 <main class="form-signin w-100 m-auto text-center">
 
@@ -39,13 +32,22 @@
                     <label asp-for="@Model.Login.Password" for="floatingPassword">Password</label>
                 </div>
 
-
-                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <div>
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                </div>
+                
                 @if (@Model.HasError)
                 {
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <p>@Model.Error</p>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <span asp-validation-for="Register.Name" class="text-danger"></span>
+                            <span asp-validation-for="Register.LastName" class="text-danger"></span>
+                            <span asp-validation-for="Register.Username" class="text-danger"></span>
+                            <span asp-validation-for="Register.Password" class="text-danger"></span>
+                            <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+                            <span asp-validation-for="Register.PhoneNumber" class="text-danger"></span>
+                            <span asp-validation-for="Register.Email" class="text-danger"></span>
                     </div>
                 }
 

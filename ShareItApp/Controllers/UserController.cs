@@ -28,15 +28,21 @@ namespace ShareItApp.Controllers
         }
 
         [ServiceFilter(typeof(LoginAuth))]
-        public IActionResult Index()
+        public IActionResult Index(UserIndexViewModel Ivm)
         {
-            return View(new UserIndexViewModel
+            if (!Ivm.HasError)
             {
-                UserClaim = User,
-                Login = new LoginViewModel(),
-                Register = new RegisterViewModel(),
-                ForgotPassword = new ForgotPasswordViewModel()
-            });
+                return View(new UserIndexViewModel
+                {
+                    UserClaim = User,
+                    Login = new LoginViewModel(),
+                    Register = new RegisterViewModel(),
+                    ForgotPassword = new ForgotPasswordViewModel()
+                });
+            }
+
+            return View(Ivm);
+          
         }
 
 
@@ -46,7 +52,14 @@ namespace ShareItApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index", vm);
+                return View("Index", new UserIndexViewModel
+                {
+              
+                    Register = new RegisterViewModel(),
+                    Login = vm.Login,
+                    ForgotPassword = new ForgotPasswordViewModel()
+
+                });
             }
 
 
@@ -83,7 +96,14 @@ namespace ShareItApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index", vm);
+                return View("Index", new UserIndexViewModel
+                {
+                 
+                    Register = vm,
+                    Login = new LoginViewModel(),
+                    ForgotPassword = new ForgotPasswordViewModel()
+
+                });
             }
 
 
@@ -92,11 +112,17 @@ namespace ShareItApp.Controllers
             RegisterResponse response = await _userServices.RegisterAsync(vm, origin);
 
 
-            if (!response.HasError)
+            if (response.HasError)
             {
-                /*vm.HasError = response.HasError;
-                vm.Error = response.Error;
-                return View(vm);*/
+                return View("Index", new UserIndexViewModel
+                {
+                    HasError = response.HasError,
+                    Error = response.Error,
+                    Register = vm,
+                    Login = new LoginViewModel(),
+                    ForgotPassword = new ForgotPasswordViewModel()
+
+                }); 
             }
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
@@ -134,12 +160,18 @@ namespace ShareItApp.Controllers
             }
             var origin = Request.Headers["origin"];
             ForgotPasswordResponse response = await _userServices.ForgotPasswordAsync(vm, origin);
-           /* if (response.HasError)
+            if (response.HasError)
             {
-                vm.HasError = response.HasError;
-                vm.Error = response.Error;
-                return View(vm);
-            }*/
+                return View("Index", new UserIndexViewModel
+                {
+                    HasError = response.HasError,
+                    Error = response.Error,
+                    Register =  new RegisterViewModel(),
+                    Login = new LoginViewModel(),
+                    ForgotPassword = vm
+
+                });
+            }
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
@@ -182,7 +214,7 @@ namespace ShareItApp.Controllers
             {
                 AppProfile profile = await _userServices.GetByIdAsync(user.Id);
 
-                profile.PhotoProfile = _userServices.UploadFile(svm.Photo, user.Id, true, profile.PhotoProfile);
+                profile.PhotoProfile = _userServices.UploadFile("Profile",svm.Photo, user.Id, true, profile.PhotoProfile);
 
                 await _userServices.UpdateAsync(profile, profile.IdUser);
 

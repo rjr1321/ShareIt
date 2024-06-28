@@ -1,0 +1,49 @@
+﻿@using ShareIt.Core.Application
+@model PublicationViewModel
+@{
+    string Id = Model.Id + "Comments";
+}
+
+<button class="btn btn-outline-secondary rounded-pill " type="button" data-bs-toggle="collapse" data-bs-target="#@Id" aria-expanded="false" aria-controls="@Id">
+    Comments
+</button>
+
+<div class="collapse mt-3" id="@Id">
+    <div class="">
+        @{
+
+        }
+        @if (Model == null || Model.Comments.Count == 0)
+        {
+            <div class="alert alert-secondary text-center" role="alert">
+                <h5>Aun no hay comentarios</h5>
+            </div>
+        }
+        else
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                if(comment.IdParentComment == null)
+                {
+                    comment.Username = Model.Username;
+                    <div class="m-2">
+                        @await Html.PartialAsync("CommentPartialView.cshtml", comment)
+                    </div>
+                }
+                
+            }
+        }
+
+        <div class="row">
+
+          
+            @await Html.PartialAsync("CommentNewPartialView.cshtml", new CommentSaveViewModel{
+                Username = Model.Username,
+                IdProfile = Model.Profile.IdUser,
+                Profile = Model.Profile,
+                IdPublication = Model.Id
+            })
+        </div>
+    </div>
+</div>
+        

@@ -11,5 +11,6 @@ namespace ShareIt.Core.Application
 {
     public interface IPublicationServices :  IGenericServices<Publication, PublicationSaveViewModel, PublicationViewModel>
     {
+        void DeletePhotoFromStorage(int Id);
     }
 }

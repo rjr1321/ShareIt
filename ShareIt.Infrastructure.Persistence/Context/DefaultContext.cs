@@ -13,10 +13,10 @@ namespace ShareIt.Infrastructure.Persistence
     {
         public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
-        DbSet<Photo> Photos { get; set; }
+    
         DbSet<AppProfile> Profiles { get; set; }
-        DbSet<Publication> Publications { get; set; }
-        DbSet<Comment> Comments { get; set; }
+        public DbSet<Publication> Publications { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         DbSet<Friendship> friendships { get; set; }
 
 
@@ -29,8 +29,6 @@ namespace ShareIt.Infrastructure.Persistence
 
             #region Tables
 
-            builder.Entity<Photo>()
-                .ToTable("Photos");
 
             builder.Entity<AppProfile>()
             .ToTable("Profiles");
@@ -48,8 +46,6 @@ namespace ShareIt.Infrastructure.Persistence
 
             #region Primary keys
 
-            builder.Entity<Photo>()
-                .HasKey(pho => pho.Id);
 
             builder.Entity<AppProfile>(entity =>
             {
@@ -109,21 +105,9 @@ namespace ShareIt.Infrastructure.Persistence
                     .OnDelete(DeleteBehavior.Cascade);
 
    
-                entity.HasMany(pub => pub.Photos)
-                    .WithOne(photo => photo.Publication)
-                    .HasForeignKey(photo => photo.PublicationId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
-            builder.Entity<Photo>(entity =>
-            {
-              
-                entity.HasOne(pho => pho.Publication)
-                .WithMany(pu => pu.Photos)
-                .HasForeignKey(photo => photo.Id)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
+         
             builder.Entity<Comment>()
                .HasOne(c => c.ParentComment)
                .WithMany(c => c.Replies)
@@ -135,6 +119,12 @@ namespace ShareIt.Infrastructure.Persistence
            .WithMany(p => p.Comments)
            .HasForeignKey(c => c.IdPublication)
            .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.Profile)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.IdProfile)
+                .OnDelete(DeleteBehavior.Restrict);
 
         
             #endregion

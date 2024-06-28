@@ -9,9 +9,9 @@ namespace ShareIt.Core.Application
 {
     public class PublicationIndexViewModel
     {
-        public ClaimsPrincipal UserClaim { get; set; }
-        public PublicationSaveViewModel Svm { get; set; }
-        public List<PublicationViewModel>  Publications { get; set; }
+        public ClaimsPrincipal? UserClaim { get; set; }
+        public PublicationSaveViewModel? Svm { get; set; }
+        public List<PublicationViewModel>? Publications { get; set; }
 
     }
 }

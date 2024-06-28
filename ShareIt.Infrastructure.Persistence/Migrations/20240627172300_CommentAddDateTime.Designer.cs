@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShareIt.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ShareIt.Infrastructure.Persistence;
 namespace ShareIt.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20240627172300_CommentAddDateTime")]
+    partial class CommentAddDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,18 +59,22 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("IdProfile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdPublication")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProfileIdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdParentComment");
 
-                    b.HasIndex("IdProfile");
-
                     b.HasIndex("IdPublication");
+
+                    b.HasIndex("ProfileIdUser");
 
                     b.ToTable("Coments", (string)null);
                 });
@@ -132,16 +139,16 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                         .HasForeignKey("IdParentComment")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ShareIt.Core.Domain.AppProfile", "Profile")
-                        .WithMany("Comments")
-                        .HasForeignKey("IdProfile")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("ShareIt.Core.Domain.Publication", "publication")
                         .WithMany("Comments")
                         .HasForeignKey("IdPublication")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ShareIt.Core.Domain.AppProfile", "Profile")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProfileIdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ParentComment");

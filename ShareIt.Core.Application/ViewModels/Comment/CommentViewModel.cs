@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShareIt.Core.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,19 @@ namespace ShareIt.Core.Application
 {
     public class CommentViewModel
     {
+        public int Id { get; set; }
+        public string Content { get; set; }
+
+        public string? Username { get; set; }
+
+        public int? IdParentComment { get; set; }
+        public Comment? ParentComment { get; set; }
+        public string IdProfile { get; set; }
+        public AppProfile Profile { get; set; }
+        public List<CommentViewModel>? Replies { get; set; }
+
+        public DateTime DateTime { get; set; }
+
+      
     }
 }

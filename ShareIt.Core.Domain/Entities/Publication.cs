@@ -12,7 +12,7 @@ namespace ShareIt.Core.Domain
         public int Id { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
-        public ICollection<Photo>? Photos { get; set; }
+        public string? Photo { get; set; }
         public string? VideoYoutube { get; set; }
         public string IdProfile { get; set; }
         public AppProfile Profile { get; set; }
@@ -23,9 +23,8 @@ namespace ShareIt.Core.Domain
 
         public Publication() 
         {
-        this.Photos = new Collection<Photo>();
+        
         this.Comments = new List<Comment>();
-        this.DateTime = DateTime.Now;
         this.Edited = false;
         
         }

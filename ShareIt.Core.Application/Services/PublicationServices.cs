@@ -16,32 +16,75 @@ namespace ShareIt.Core.Application
 
         public readonly IMapper _mapper;
 
-        public readonly IPhotoRepository _photoRepository;
+  
 
-        public PublicationServices(IPublicationRepository repository, IMapper mapper, IPhotoRepository photoRepository) : base(repository, mapper)
+        public PublicationServices(IPublicationRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
-            _photoRepository = photoRepository;
         }
 
-        public virtual async Task<PublicationSaveViewModel> AddSaveViewModel(PublicationSaveViewModel vm)
+
+        public override async Task<PublicationSaveViewModel> AddSaveViewModel(PublicationSaveViewModel vm)
         {
+          
+            Publication publication = _mapper.Map<Publication>(vm);
 
+            Publication addedPublication = await AddAsync(publication);
 
+            if (vm.Photo != null)
+            {
+                publication.Photo = UploadFile("Publications", vm.Photo, addedPublication.Photo);
 
+               await UpdateAsync(addedPublication, addedPublication.Id);
+            }
+          
+            PublicationSaveViewModel savedVm = _mapper.Map<PublicationSaveViewModel>(addedPublication);
 
-         return await base.AddSaveViewModel(vm);
-
-
-
-
+            return savedVm;
+        
         }
 
-        public virtual async Task UpdateSaveViewModel(PublicationSaveViewModel vm, int id)
+
+        public override async Task<PublicationSaveViewModel> UpdateSaveViewModel(PublicationSaveViewModel vm, int id)
         {
-           await base.UpdateSaveViewModel(vm, id);
+            Publication publication = _mapper.Map<Publication>(vm);
+
+            if (vm.Photo != null)
+            {
+                publication.Photo = UploadFile("Publications", vm.Photo, id.ToString());
+            }
+
+            publication.Edited = true;
+
+             await UpdateAsync(publication, id);
+
+            return _mapper.Map<PublicationSaveViewModel>(publication);
         }
+
+        public void DeletePhotoFromStorage(int Id)
+        {
+            string basePath = $"/Images/Publications/{Id}";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
+
+            if (Directory.Exists(path))
+            {
+                DirectoryInfo directory = new(path);
+
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo folder in directory.GetDirectories())
+                {
+                    folder.Delete(true);
+                }
+
+                Directory.Delete(path);
+            }
+        }
+
+
 
 
     }

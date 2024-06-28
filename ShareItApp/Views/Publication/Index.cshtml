@@ -4,10 +4,17 @@
 @await Html.PartialAsync("../Shared/NavbarMainMenuPartialView.cshtml", Model.UserClaim.Identity.Name)
 
 
-<div class="container">
-    <main role="main" class="pb-3">
+
+<main role="main" class="content" class="pb-3">
+    <div class="container">
+
+        <div>
+            @await Html.PartialAsync("../Shared/Publication/PublicationNewPartialView.cshtml", Model.Svm)
+        </div>
 
 
+        <div>
+            @await Html.PartialAsync("../Shared/Publication/PublicationListPartialView.cshtml", Model)
+        </div>
     
-    </main>
-</div>
+</main>

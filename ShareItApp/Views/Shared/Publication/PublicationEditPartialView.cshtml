@@ -1,0 +1,78 @@
+﻿@using ShareIt.Core.Application
+@model PublicationSaveViewModel
+@{
+    string Id = Model.Id + "Edit";
+}
+
+
+    <button type="button" class="btn btn-outline-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#@Id">
+        Edit
+    </button>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="@Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Publication</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form method="post" asp-controller="Publication" asp-action="Update" ID="NewPublicationForm" enctype="multipart/form-data">
+
+                    <input type="hidden" value="@Model.IdProfile" asp-for="IdProfile" />
+                    <input type="hidden" value="@Model.Id" asp-for="Id" />
+                    <div class="form-floating mb-3 rounded-pill">
+                        <input asp-for="Title" class="form-control rounded-pill" placeholder="Nombre">
+                        <label asp-for="Title"></label>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 ">
+                        <input asp-for="VideoYoutube" class="form-control rounded-pill" placeholder="VideoUrl">
+                        <label asp-for="VideoYoutube">Video URL</label>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating">
+                        <textarea asp-for="Description" class="form-control rounded-pill"
+                                  placeholder="Qué estás pensando"></textarea>
+                        <label asp-for="Description">Que estas pensando</label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ExistingPhotoPath))
+                    {
+                        <div class="mb-3 text-center">
+                            <label>Existing Photo</label>
+                            <div>
+                                <img src="@Model.ExistingPhotoPath" alt="Existing Photo" style="max-height: 200px;" />
+                            </div>
+                        </div>
+                    }
+
+                    <div class="mb-3 text-center mt-1">
+                        <label asp-for="Photo" class="form-label">Image</label>
+                        <input asp-for="Photo" class="form-control form-control-lg rounded-pill" accept="image/*" type="file" id="imagenes">
+                        <span asp-validation-for="Photo" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary rounded-pill" type="submit">Save</button>
+                        <button class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#@Id"
+                                type="button">
+                            Cancelar
+                        </button>
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

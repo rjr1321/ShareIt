@@ -1,0 +1,113 @@
+﻿@using ShareIt.Core.Application
+@model PublicationViewModel
+@{
+    string EditYouTubeUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return "";
+        }
+
+        if (url.Contains("youtube.com/watch?v="))
+        {
+
+            int index = url.IndexOf("&");
+            string videoId = url.Substring(url.IndexOf("v=") + 2, index - (url.IndexOf("v=") + 2));
+
+            url = $"https://www.youtube.com/embed/{videoId}";
+        }
+        if (url == null)
+        {
+            return null;
+        }
+
+        return url;
+    }
+
+
+    Model.VideoYoutube = EditYouTubeUrl(Model.VideoYoutube);
+}
+
+<div class="card m-5">
+    <div class="card-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-1 text-start">
+                    <img class="rounded-circle align-middle" style="height: 40px; width: 40px;" src="@Model.Profile.PhotoProfile" />
+                </div>
+                <div class="col-4 text-start">
+                    <div class="col-9 align-middle">
+                        @Model.Username
+                    </div>
+                </div>
+
+                <div class="col-2"></div>
+                <div class="col-3 text-end">
+                    @if (Model.Edited == true)
+                    {
+                        <strong class="d-inline-block mb-2 text-success">Edited</strong>
+                    }
+
+                    <div class="mb-1 text-muted">@Model.DateTime</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="text-center">
+            <h3 class="mb-0">@Model.Title</h3>
+        </div>
+        <ul class="list-group list-group-flush">
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <li class="list-group-item">
+                    <p class="mb-auto">@Model.Description</p>
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(Model.VideoYoutube))
+            {
+                <li class="list-group-item">
+                    <div class="video-container">
+                        <iframe src="@Model.VideoYoutube" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                    </div>
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(Model.Photo))
+            {
+               <div>
+                    <img src="@Model.Photo" class="img-fluid" alt="...">
+               </div>
+            }
+        </ul>
+    </div>
+    <div class="card-footer text-body-secondary text-center">
+
+       
+        @await Html.PartialAsync("PublicationDeletePartialView.cshtml", Model)
+
+        @await Html.PartialAsync("PublicationEditPartialView.cshtml", new PublicationSaveViewModel
+   {
+       Id = Model.Id,
+       IdProfile = Model.Profile.IdUser,
+       Title = Model.Title,
+       Description = Model.Description,
+       VideoYoutube = Model.VideoYoutube,
+       ExistingPhotoPath = Model.Photo,
+
+   })
+
+        @await Html.PartialAsync("/Views/Shared/Comment/CommentListPartialView.cshtml", Model)
+
+       
+    </div>
+
+
+</div>
+
+
+
+
+

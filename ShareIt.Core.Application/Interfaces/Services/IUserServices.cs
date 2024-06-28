@@ -19,7 +19,7 @@ namespace ShareIt.Core.Application
 
         Task<AppProfile> GetByIdAsync(string id);
 
-        public string UploadFile(IFormFile file, string id, bool isEditMode = false, string imagePath = "");
+        public string UploadFile(string archive, IFormFile file, string id, bool isEditMode = false, string imagePath = "");
 
         Task<AppProfile> UpdateAsync(AppProfile entity, string id);
     }
