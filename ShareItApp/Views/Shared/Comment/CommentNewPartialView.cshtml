@@ -1,22 +1,33 @@
-﻿@using ShareIt.Core.Application
+﻿@using Microsoft.AspNetCore.Identity
+@using ShareIt.Core.Application
+@using ShareIt.Core.Domain
+@using ShareIt.Infrastructure.Identity
+@inject IUserServices _userServices
+@inject UserManager<User> _userManager
+@using System.Security.Claims
+@using ShareIt.Core.Application
 @model CommentSaveViewModel
 @{
+    string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    string currentUserName = User.Identity.Name;
+
+    AppProfile profile = await _userServices.GetByIdAsync(currentUserId);
 }
 
 
 <div class="container mt-3">
     <div class="row align-items-start">
         <div class="col-1 text-start">
-            <img class="rounded-circle align-middle" style="height: 40px; width: 40px;" src="@Model.Profile.PhotoProfile" />
+            <img class="rounded-circle align-middle" style="height: 40px; width: 40px;" src="@profile.PhotoProfile" />
         </div>
         <div class="col-3 text-start">
             <div class="align-middle">
-                @Model.Username
+                @currentUserName
             </div>
         </div>
         <div class="col-8">
             <form asp-action="AddComment" asp-controller="Publication" method="post" class="form-inline">
-                <input hidden value="@Model.IdProfile" asp-for="IdProfile" />
+                <input hidden value="@profile.IdUser" asp-for="IdProfile" />
                 <input hidden value="@Model.IdPublication" asp-for="IdPublication" />
                 <input hidden value="@Model.IdParentComment" asp-for="IdParentComment" />
                 <div class="input-group mb-3">

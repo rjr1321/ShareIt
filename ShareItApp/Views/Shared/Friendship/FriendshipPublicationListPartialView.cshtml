@@ -1,5 +1,8 @@
-﻿@{
-}
+﻿@using Microsoft.AspNetCore.Identity
+@using ShareIt.Core.Application
+@using System.Security.Claims
+@using ShareIt.Infrastructure.Identity
+@inject UserManager<User> UserManager
 @using ShareIt.Core.Application
 @model FriendshipIndexViewModel
 
@@ -8,7 +11,11 @@
 
     @foreach (var publication in Model.Publications)
     {
-        publication.Username = Model.UserClaim.Identity.Name;
+        var user = UserManager.Users.FirstOrDefault(u => u.Id == publication.Profile.IdUser);
+        if (user != null)
+        {
+            publication.Username = user.UserName;
+        }
         @await Html.PartialAsync("../Shared/Publication/PublicationPartialView", publication)
         ;
 

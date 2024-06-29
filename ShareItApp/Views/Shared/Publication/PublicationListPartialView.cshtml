@@ -1,16 +1,24 @@
 ﻿@{
 }
+@using Microsoft.AspNetCore.Identity
 @using ShareIt.Core.Application
+@using System.Security.Claims
+@using ShareIt.Infrastructure.Identity
+@inject UserManager<User> UserManager
 @model PublicationIndexViewModel
 
 
     <div >
 
-        @foreach(var publication in Model.Publications)
+    @foreach (var publication in Model.Publications)
     {
-        publication.Username = Model.UserClaim.Identity.Name;
-        @await Html.PartialAsync("../Shared/Publication/PublicationPartialView", publication);
-           
+        var user = UserManager.Users.FirstOrDefault(u => u.Id == publication.Profile.IdUser);
+        if (user != null)
+        {
+            publication.Username = user.UserName;
+        }
+        @await Html.PartialAsync("../Shared/Publication/PublicationPartialView", publication)
+        ;
     }
 
     </div>

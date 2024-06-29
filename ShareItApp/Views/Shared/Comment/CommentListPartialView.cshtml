@@ -1,4 +1,9 @@
-﻿@using ShareIt.Core.Application
+﻿@using Microsoft.AspNetCore.Identity
+@using ShareIt.Core.Application
+@using System.Security.Claims
+@using ShareIt.Infrastructure.Identity
+@inject UserManager<User> UserManager
+@using ShareIt.Core.Application
 @model PublicationViewModel
 @{
     string Id = Model.Id + "Comments";
@@ -25,7 +30,9 @@
             {
                 if(comment.IdParentComment == null)
                 {
-                    comment.Username = Model.Username;
+                    var user = UserManager.Users.FirstOrDefault(u => u.Id == comment.Profile.IdUser);
+
+                    comment.Username = user.UserName;
                     <div class="m-2">
                         @await Html.PartialAsync("CommentPartialView.cshtml", comment)
                     </div>

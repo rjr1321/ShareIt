@@ -14,10 +14,10 @@ namespace ShareIt.Infrastructure.Persistence
         public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
     
-        DbSet<AppProfile> Profiles { get; set; }
+        public DbSet<AppProfile> Profiles { get; set; }
         public DbSet<Publication> Publications { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        DbSet<Friendship> friendships { get; set; }
+        public DbSet<Friendship> friendships { get; set; }
 
 
 

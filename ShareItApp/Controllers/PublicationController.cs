@@ -75,17 +75,10 @@ namespace ShareItApp.Controllers
            
                 await _publicationServices.AddSaveViewModel(model);
 
-             
-            return View("Index", new PublicationIndexViewModel
-            {
-                UserClaim = User,
-                Svm = new PublicationSaveViewModel
-                {
-                    IdProfile = User.FindFirstValue(ClaimTypes.NameIdentifier)
-        },
-                Publications = Publications.FindAll(x => x.Profile.IdUser == User.FindFirstValue(ClaimTypes.NameIdentifier))
-            });
 
+         
+
+            return RedirectToRoute(new { controller = "Publication", action = "Index" });
 
 
 
@@ -141,15 +134,7 @@ namespace ShareItApp.Controllers
 
            _publicationServices.DeletePhotoFromStorage(Id);
 
-            return View("Index", new PublicationIndexViewModel
-            {
-                UserClaim = User,
-                Svm = new PublicationSaveViewModel
-                {
-                    IdProfile = User.FindFirstValue(ClaimTypes.NameIdentifier)
-        },
-                Publications = Publications.FindAll(x => x.Profile.IdUser == User.FindFirstValue(ClaimTypes.NameIdentifier))
-            });
+            return RedirectToRoute(new { controller = "Publication", action = "Index" });
         }
 
 

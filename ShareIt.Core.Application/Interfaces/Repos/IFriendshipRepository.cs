@@ -9,5 +9,6 @@ namespace ShareIt.Core.Application
 {
     public interface IFriendshipRepository : IGenericRepository<Friendship>
     {
+        Task DeleteAsync(string appProfileId, string friendId);
     }
 }

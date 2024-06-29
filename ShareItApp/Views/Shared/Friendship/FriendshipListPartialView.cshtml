@@ -1,0 +1,33 @@
+﻿@using ShareIt.Core.Application
+@model FriendshipIndexViewModel
+@{
+
+}
+
+
+
+<div id="Friends" class="carousel slide mt-3" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @for (int i = 0; i < Model.Users.Count; i += 3) // Change 3 to the number of items per slide
+        {
+            <div class="carousel-item @(i == 0 ? "active" : "")">
+                <div class="row">
+                    @for (int j = i; j < i + 3 && j < Model.Users.Count; j++)
+                    {
+                        <div class="col-md-4">
+                            @await Html.PartialAsync("/Views/Shared/User/UserFriendshipPartialView.cshtml", Model.Users[j])
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#Friends" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#Friends" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

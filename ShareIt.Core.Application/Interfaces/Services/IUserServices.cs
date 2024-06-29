@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShareIt.Core.Application
 {
-    public interface IUserServices : IGenericServices<AppProfile, RegisterViewModel, UserViewModel>
+    public interface IUserServices : IGenericServices<AppProfile, RegisterViewModel, UserFriendshipViewModel>
     {
         Task<string> ConfirmEmailAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordViewModel vm, string origin);

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShareIt.Core.Application
 {
-    public class UserServices : GenericServices<AppProfile, RegisterViewModel, UserViewModel>, IUserServices
+    public class UserServices : GenericServices<AppProfile, RegisterViewModel, UserFriendshipViewModel>, IUserServices
     {
         public readonly IAppProfileRepository _repository;
 

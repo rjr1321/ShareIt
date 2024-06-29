@@ -12,7 +12,7 @@ namespace ShareIt.Core.Application
     {
         public ClaimsPrincipal? UserClaim { get; set; }
         public FriendshipSaveViewModel? Svm { get; set; }
-        public List<UserViewModel>? Users { get; set; }
+        public List<UserFriendshipViewModel>? Users { get; set; }
         public List<PublicationViewModel>? Publications { get; set; }
     }
 }

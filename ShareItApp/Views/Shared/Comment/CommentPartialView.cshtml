@@ -12,7 +12,7 @@
     string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
     string currentUserName = User.Identity.Name;
 
-    AppProfile profile = await _userServices.GetByIdAsync(currentUserId);
+   AppProfile profile = await _userServices.GetByIdAsync(currentUserId);
 
     List<int> commentsOn = new List<int>();
 

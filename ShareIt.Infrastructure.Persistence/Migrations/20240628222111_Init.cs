@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShareIt.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,6 +55,7 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VideoYoutube = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdProfile = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -80,8 +81,8 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdParentComment = table.Column<int>(type: "int", nullable: true),
                     IdPublication = table.Column<int>(type: "int", nullable: false),
-                    IdProfile = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileIdUser = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    IdProfile = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,11 +94,11 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Coments_Profiles_ProfileIdUser",
-                        column: x => x.ProfileIdUser,
+                        name: "FK_Coments_Profiles_IdProfile",
+                        column: x => x.IdProfile,
                         principalTable: "Profiles",
                         principalColumn: "IdUser",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Coments_Publications_IdPublication",
                         column: x => x.IdPublication,
@@ -106,39 +107,20 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Photos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublicationId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Photos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Photos_Publications_Id",
-                        column: x => x.Id,
-                        principalTable: "Publications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Coments_IdParentComment",
                 table: "Coments",
                 column: "IdParentComment");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Coments_IdProfile",
+                table: "Coments",
+                column: "IdProfile");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Coments_IdPublication",
                 table: "Coments",
                 column: "IdPublication");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Coments_ProfileIdUser",
-                table: "Coments",
-                column: "ProfileIdUser");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friendship_FriendId",
@@ -159,9 +141,6 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Friendship");
-
-            migrationBuilder.DropTable(
-                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Publications");

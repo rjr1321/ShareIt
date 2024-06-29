@@ -12,8 +12,8 @@ using ShareIt.Infrastructure.Persistence;
 namespace ShareIt.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20240619201133_init")]
-    partial class init
+    [Migration("20240628222111_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.AppProfile", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.AppProfile", b =>
                 {
                     b.Property<string>("IdUser")
                         .HasColumnType("nvarchar(450)");
@@ -39,7 +39,7 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.ToTable("Profiles", (string)null);
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Comment", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,32 +51,31 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IdParentComment")
                         .HasColumnType("int");
 
                     b.Property<string>("IdProfile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("IdPublication")
                         .HasColumnType("int");
-
-                    b.Property<string>("ProfileIdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdParentComment");
 
-                    b.HasIndex("IdPublication");
+                    b.HasIndex("IdProfile");
 
-                    b.HasIndex("ProfileIdUser");
+                    b.HasIndex("IdPublication");
 
                     b.ToTable("Coments", (string)null);
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Friendship", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Friendship", b =>
                 {
                     b.Property<string>("AppProfileId")
                         .HasColumnType("nvarchar(450)");
@@ -91,24 +90,7 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.ToTable("Friendship", (string)null);
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Photo", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PublicationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Photos", (string)null);
-                });
-
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Publication", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Publication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,6 +111,9 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -143,23 +128,23 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.ToTable("Publications", (string)null);
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Comment", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Comment", b =>
                 {
-                    b.HasOne("ShareIt.Core.Domain.Entities.Comment", "ParentComment")
+                    b.HasOne("ShareIt.Core.Domain.Comment", "ParentComment")
                         .WithMany("Replies")
                         .HasForeignKey("IdParentComment")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ShareIt.Core.Domain.Entities.Publication", "publication")
+                    b.HasOne("ShareIt.Core.Domain.AppProfile", "Profile")
                         .WithMany("Comments")
-                        .HasForeignKey("IdPublication")
+                        .HasForeignKey("IdProfile")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ShareIt.Core.Domain.Entities.AppProfile", "Profile")
+                    b.HasOne("ShareIt.Core.Domain.Publication", "publication")
                         .WithMany("Comments")
-                        .HasForeignKey("ProfileIdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdPublication")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ParentComment");
@@ -169,15 +154,15 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.Navigation("publication");
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Friendship", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Friendship", b =>
                 {
-                    b.HasOne("ShareIt.Core.Domain.Entities.AppProfile", "AppProfile")
+                    b.HasOne("ShareIt.Core.Domain.AppProfile", "AppProfile")
                         .WithMany("Friends")
                         .HasForeignKey("AppProfileId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ShareIt.Core.Domain.Entities.AppProfile", "Friend")
+                    b.HasOne("ShareIt.Core.Domain.AppProfile", "Friend")
                         .WithMany()
                         .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -188,20 +173,9 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.Navigation("Friend");
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Photo", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Publication", b =>
                 {
-                    b.HasOne("ShareIt.Core.Domain.Entities.Publication", "Publication")
-                        .WithMany("Photos")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publication");
-                });
-
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Publication", b =>
-                {
-                    b.HasOne("ShareIt.Core.Domain.Entities.AppProfile", "Profile")
+                    b.HasOne("ShareIt.Core.Domain.AppProfile", "Profile")
                         .WithMany("Publications")
                         .HasForeignKey("IdProfile")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -210,7 +184,7 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.AppProfile", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.AppProfile", b =>
                 {
                     b.Navigation("Comments");
 
@@ -219,16 +193,14 @@ namespace ShareIt.Infrastructure.Persistence.Migrations
                     b.Navigation("Publications");
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Comment", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Comment", b =>
                 {
                     b.Navigation("Replies");
                 });
 
-            modelBuilder.Entity("ShareIt.Core.Domain.Entities.Publication", b =>
+            modelBuilder.Entity("ShareIt.Core.Domain.Publication", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

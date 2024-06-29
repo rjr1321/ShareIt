@@ -57,3 +57,19 @@ footer {
         height: 100%;
         border: 0;
     }
+
+.carousel-item {
+    padding: 20px; /* Adjust padding as needed */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%; /* Adjust the width to provide space for the content */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Add background color for better visibility */
+    border-radius: 50%; /* Make the icons circular */
+    padding: 10px; /* Add padding inside the icons */
+}

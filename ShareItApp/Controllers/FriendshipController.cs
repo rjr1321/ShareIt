@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using ShareIt.Core.Application;
 using ShareIt.Core.Domain;
 using ShareIt.Infrastructure.Identity;
+using ShareIt.Infrastructure.Persistence;
 using System.Security.Claims;
 
 namespace ShareItApp.Controllers
@@ -11,24 +14,86 @@ namespace ShareItApp.Controllers
 
         public readonly IPublicationServices _publicationServices;
 
-        public readonly List<PublicationViewModel> Publications;
-
         public readonly ICommentServices _commentServices;
+
+        public readonly IUserServices _userServices;
 
         public readonly IFriendshipRepository _friendshipRepository;
 
-        
+        public readonly UserManager<User> _userManager;
+
+       
+
+        public readonly List<PublicationViewModel> Publications;
+
+        public readonly List<UserFriendshipViewModel> Users;
 
 
-
-        public FriendshipController(IPublicationServices publicationServices, ICommentServices commentServices, IFriendshipRepository friendshipRepository)
+        public FriendshipController(IPublicationServices publicationServices, ICommentServices commentServices, IFriendshipRepository friendshipRepository, UserManager<User> userManager, IUserServices userServices)
         {
             _publicationServices = publicationServices;          
             _commentServices = commentServices;
             _friendshipRepository = friendshipRepository;
-            Publications = _publicationServices.GetAllViewModel().Result;
-        
+            _userManager = userManager;
+            _userServices = userServices;
+
+            Users = new List<UserFriendshipViewModel>();
+
+            Publications = _publicationServices.GetAllViewModel().Result;       
+
         }
+
+        private async Task LoadUsers()
+        {
+            try
+            {
+                string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+               
+                List<AppProfile> profiles = await _userServices.GetAllAsync();
+                List<Friendship> friendships = (await _friendshipRepository.GetAllAsync()).ToList();
+
+               
+                List<Friendship> userFriendships = friendships.FindAll(x => x.AppProfileId == loggedInUserId);
+
+                Users.Clear();
+
+             
+                foreach (var user in _userManager.Users)
+                {
+                    if (user.Id != loggedInUserId) 
+                    {
+                        bool isFriend = userFriendships.Any(x => x.FriendId == user.Id);
+                        AppProfile profile = profiles.FirstOrDefault(x => x.IdUser == user.Id);
+
+                        Users.Add(new UserFriendshipViewModel
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            LastName = user.LastName,
+                            Photo = profile?.PhotoProfile,
+                            Username = user.UserName, 
+
+                            svm = new FriendshipSaveViewModel
+                            {
+                                IdFriend = user.Id
+                            },
+
+                            Added = isFriend
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+          
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+
+      
+
 
         public async Task<IActionResult> Index(FriendshipIndexViewModel vm)
         {
@@ -36,79 +101,100 @@ namespace ShareItApp.Controllers
             {
                 return RedirectToRoute(new { controller = "User", action = "Index" });
             }
-
             else if (!ModelState.IsValid)
             {
                 return View("Index", vm);
-
             }
 
-            string Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await LoadUsers();
+            string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Fetch all friendships for the logged-in user
+            List<Friendship> userFriendships = (await _friendshipRepository.GetAllAsync())
+                .Where(x => x.AppProfileId == loggedInUserId || x.FriendId == loggedInUserId)
+                .ToList();
+
+            // Get friend IDs
+            List<string> friendIds = userFriendships
+                .Select(x => x.AppProfileId == loggedInUserId ? x.FriendId : x.AppProfileId)
+                .ToList();
+
+            // Fetch publications of friends
+            List<PublicationViewModel> friendPublications = (await _publicationServices.GetAllViewModel())
+                .Where(x => friendIds.Contains(x.Profile.IdUser))
+                .ToList();
 
             return View(new FriendshipIndexViewModel
             {
                 UserClaim = User,
-                Svm = new FriendshipSaveViewModel()
-                ,
-                Publications = Publications.FindAll(x => x.Profile.IdUser == Id)
-
+                Svm = new FriendshipSaveViewModel(),
+                Publications = friendPublications,
+                Users = Users
             });
         }
 
+
+
+
         [HttpPost]
-        public async Task<IActionResult> Delete(int Id)
+        public async Task<IActionResult> Delete(FriendshipIndexViewModel vm)
         {
-            await _friendshipRepository.DeleteAsync(Id);
+            string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-            return View("Index", new PublicationIndexViewModel
-            {
-                UserClaim = User,
-                Svm = new PublicationSaveViewModel
-                {
-                    IdProfile = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                },
-                Publications = Publications.FindAll(x => x.Profile.IdUser == User.FindFirstValue(ClaimTypes.NameIdentifier))
-            });
+        
+
+            await _friendshipRepository.DeleteAsync(loggedInUserId, vm.Svm.IdFriend);
+
+
+            return RedirectToRoute(new { controller = "Friendship", action = "Index" });
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(PublicationSaveViewModel model)
+        public async Task<IActionResult> Add(UserFriendshipViewModel model)
         {
 
             if (HttpContext.Session.Get("user") == null)
             {
                 return RedirectToRoute(new { controller = "User", action = "Index" });
             }
-            else if (!ModelState.IsValid)
-            {
-                return View("Index", new PublicationIndexViewModel
-                {
-                    UserClaim = User,
-                    Svm = model,
-                    Publications = Publications.FindAll(x => x.Profile.IdUser == User.FindFirstValue(ClaimTypes.NameIdentifier))
-                }); ; ;
 
+
+           AppProfile profile = await _userServices.GetByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            AppProfile friend = await _userServices.GetByIdAsync(model.svm.IdFriend);
+
+           if(profile.Friends == null)
+            {
+                profile.Friends = new List<Friendship>();
             }
 
-
-            await _publicationServices.AddSaveViewModel(model);
-
-
-            return View("Index", new PublicationIndexViewModel
+            if (friend.Friends == null)
             {
-                UserClaim = User,
-                Svm = new PublicationSaveViewModel
-                {
-                    IdProfile = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                },
-                Publications = Publications.FindAll(x => x.Profile.IdUser == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                friend.Friends = new List<Friendship>();
+            }
+
+            profile.Friends.Add(new Friendship
+            {
+                AppProfileId = profile.IdUser,
+                FriendId = model.svm.IdFriend
+
             });
 
+            friend.Friends.Add(new Friendship
+            {
+                AppProfileId = model.svm.IdFriend,
+                FriendId = profile.IdUser
+
+            });
+
+            await _userServices.UpdateAsync(profile, profile.IdUser);
+
+            await _userServices.UpdateAsync(friend, friend.IdUser);
 
 
 
+            return RedirectToRoute(new { controller = "Friendship", action = "Index" });
 
         }
 
@@ -152,7 +238,7 @@ namespace ShareItApp.Controllers
 
 
 
-            return RedirectToRoute(new { controller = "Friends", action = "Index" });
+            return RedirectToRoute(new { controller = "Friendship", action = "Index" });
 
         }
     }
